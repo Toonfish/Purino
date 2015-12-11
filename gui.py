@@ -18,7 +18,7 @@ class InputFrame(tk.Frame):
                     "nr":   guie.TextFrame(self, 'Rechnungsnummer', width=13, height=1),
                     "date": guie.TextFrame(self, 'Rechnungsdatum', width=13, height=1),
                     "sum":  guie.TextFrame(self, 'Endsumme', width=13, height=1),
-                    "ven":  guie.ComboboxFrame(self, 'Lieferant', venlist.get_vendor_list, width=15, height=1),
+                    "ven":  guie.ComboboxFrame(self, 'Lieferant', venlist.get_vendor_list(), width=15, height=1),
                     "mat":  guie.CheckButtonFrame(self, 'Material'),
                     "not":  guie.TextFrame(self, 'Notizen', width=19, height=3),
                     "sca":  guie.TextFrame(self, 'Scandatum', width=13, height=1),

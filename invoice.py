@@ -7,8 +7,8 @@ import shutil, os
 
 import errors as errors
 import settings as settings
-import helpers as helpers
-import sqlite3 as sql
+from helpers import sqlhelper as sql
+from helpers import mydate
 
 class Invoice():
     def __init__(self, cost_center="", inv_nr="", inv_date="", total_sum="", vendor="", is_material=0, notes="", pages=None, state=1):
@@ -31,20 +31,14 @@ class Invoice():
     def add_page(self, path):
         self.pages.append(path)
 
-    def move(self, new_path):
-        """
-        Moves invoice and changes the object and SQL data
-        """
-        new_paths_list = []
-        for item in self.pages:
-            shutil.move(item, new_path + item.split("/")[-1])
-            new_paths_list.append(new_path + str(self.number) + "_" + item.split("_")[-1])
-        self.pages = new_paths_list
-        return True
+
 
     def edit_data(self, inv_data):
         for key, value in inv_data:
-            setattr(self, formathelp.translate_attribute(key), value)
+            if key == "date" or key == "sca":
+                setattr(self, formathelp.translate_attribute(key), mydate.MyDate(value))
+            else:
+                setattr(self, formathelp.translate_attribute(key), value)
             
 
     def update_data(self, new_invoice_number=""):
@@ -56,11 +50,9 @@ class Invoice():
                 print("Update Worked")
                 return True
         except sqlite3.OperationalError as e:
-            print(e)
-            return errors.print_error("Inv_Upd_1")
+            return errors.print_error("Inv_Upd_1", e)
         except Exception as e:
-            print(e)
-            return errors.print_error("Inv_Upd_2")
+            return errors.print_error("Inv_Upd_2", e)
         return False
 
     def delete(self, save_copy=False):
@@ -84,12 +76,43 @@ class Invoice():
         return res[:-1]
 
     def export(self):
-        if sql.invoice_exists(self.number):
-            return False
-        else:
-            if sql.file_invoice(self):
+        query = sql.export_query(self)
+        sqlconn = sql.getconn()
+        if sql.execute(query, sqlconn):
+            if self.move(settings.processing_path, sqlconn):
                 return True
+            else:
+                return False
+        sqlconn.rollback()
         return False
+
+
+    def move(self, new_path, sqlconn=sql.getconn()):
+        """
+        Moves invoice and changes the object and SQL data
+        """
+        if len(self.pages) == 1:
+            old_path = self.pages[0]
+            self.pages = []
+            self.pages.append(new_path + str(self.number) + "_1")
+            if sql.execute(sql.move_query(self)):
+                try:
+                    shutil.move(old_path, new_path + str(self.number) + "_1")
+                    sqlconn.commit()
+                    sqlconn.close()
+                    return True
+                except Exception as e:
+                    sqlconn.rollback()
+                    sqlconn.close()
+                    return errors.print_error("inv_move_move", e)
+            else:
+                sqlconn.rollback()
+                sqlconn.close()
+                return errors.print_error("inv_move_sql")
+        else:  #TODO move multiple pages
+            sqlconn.rollback()
+            sqlconn.close()
+            return errors.print_error("inv_move_nyi")
 
     def pretty_print(self):
         result =    "Rechnungsnummer: " + str(self.number)

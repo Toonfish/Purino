@@ -23,17 +23,18 @@ class Register(Worker):
                     self._invoice_list.append(inv.Invoice(pages=[settings.invoice_scans_path + file]))
 
     def file_current_invoice(self):
-        print("Register process started")
+        print("Register process started\n__________")
         inv_data = self.interface.get_all_inputs()
         inv_data.append(("sca", mydate.today()))
         inv_data.append(("his", mydate.timestamp() + "Aufgenommen"))
         if not validate.inv_data(inv_data):
-            print("Register process failed on data validation")
+            print("Register process failed on data validation\n____________________")
             return False
         this_inv = self.get_current_invoice()
         this_inv.edit_data(inv_data)
         if this_inv.export():
-            print("Invoice successfully registered")
+            print("Invoice successfully registered\n____________________")
             return True
-        print("Register process failed on export")
+        print("Register process failed on export\n____________________")
         return False
+

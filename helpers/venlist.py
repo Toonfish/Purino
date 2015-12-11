@@ -1,3 +1,6 @@
+import settings
+
+
 def get_vendor_list():
     file = open(settings.server_path + "Lieferanten.txt", "r")
     vendors = []

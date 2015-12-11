@@ -24,7 +24,7 @@ errors = {
     # helpers
     "val_nr_syntax": ("Fehlercode: val_nr_syntax",
                       "Die angegebene Rechnungsnummer ist nicht möglich, bitte prüfen Sie die Eingabe"
-                      '.\nDie folgenden Sonderzeichen sind nicht erlaubt: | > : < \\ ? * " ' + "'\n"
+                      '.\nDie folgenden Sonderzeichen sind nicht erlaubt: | > : < \\ / , ? * " ' + "'\n"
                       "(Am besten bitte einfach die entsprechenden Sonderzeichen löschen.)"),
     # helpers
     "val_nr_missing": ("Fehlercode: val_nr_missing",
@@ -45,11 +45,14 @@ errors = {
     # helpers
     "val_sup_syntax": ("Fehlercode: val_sup_syntax",
                       "Der angegebene Lieferant ist nicht möglich, bitte prüfen Sie die Eingabe."
-                      '.\nDie folgenden Sonderzeichen sind nicht erlaubt: | > : < \\ ? * " ' +
+                      '.\nDie folgenden Sonderzeichen sind nicht erlaubt: | > : < \\ / , ? * " ' +
                       "'\n(Am besten bitte einfach die entsprechenden Sonderzeichen löschen.)"),
     # helpers
     "val_sup_missing": ("Fehlercode: val_sup_missing",
                        "Bitte geben Sie einen Lieferanten an."),
+
+    "inv_move_move": ("Fehlercode: inv_move_move",
+                      "Beim Verschieben der Rechnung ist ein Fehler aufgetreten"),
     "Reg_ATEI_1": ("Fehlercode: Reg_ATEI_1",
                    "Beim Zugriff auf die Datenbank ist ein Fehler aufgetreten."),
     "App_CCC_CC_1": ("Fehlercode: Reg_Sci_CC_1",

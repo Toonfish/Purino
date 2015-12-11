@@ -1,10 +1,7 @@
 import datetime
 
 
-
-
 def format_date(date_text):
-    print(date_text)
     try:
         date_text = date_text.replace(",", ".")
         if len(date_text.split(".")) == 3:

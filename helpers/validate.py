@@ -3,9 +3,8 @@ from helpers import formathelp
 
 
 def inv_nr(inv_nr):
-    print("hi")
     if len(str(inv_nr)) != 0:
-        if any(i in inv_nr for i in ["|", ">", ":", "<", "\\", "?", "*", '"', "'"]):
+        if any(i in inv_nr for i in ["|", ">", ":", "<", "\\", "?", "*", '"', "'", "/", ","]):
             return errors.print_error("val_nr_syntax")
         return True
     return errors.print_error("val_nr_missing")
@@ -40,7 +39,7 @@ def price(price):
 
 def vendor(vendor):
     if len(vendor) != 0:
-        if any(i in vendor for i in ["|", ">", ":", "<", "\\", "?", "*", '"', "'"]):
+        if any(i in vendor for i in ["|", ">", ":", "<", "\\", "?", "*", '"', "'", "/", ","]):
             return errors.print_error("val_sup_syntax")
         return True
     return errors.print_error("val_sup_missing")

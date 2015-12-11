@@ -5,8 +5,9 @@ from helpers import formathelp
 
 __author__ = 'Robert Vagt'
 
-class Date():
+class MyDate():
     def __init__(self, date_string):
+        #TODO
         self.year = 2000
         self.month = 1
         self.day = 1
